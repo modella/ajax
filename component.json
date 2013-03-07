@@ -1,0 +1,19 @@
+{
+  "name": "ajax",
+  "repo": "modella/ajax",
+  "description": "AJAX Sync Layer for Modella",
+  "version": "0.0.0",
+  "keywords": [
+    "modella",
+    "sync",
+    "ajax"
+  ],
+  "dependencies": {
+    'modella/modella': '*'
+  },
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "index.js"
+  ]
+}

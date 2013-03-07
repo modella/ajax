@@ -1,0 +1,26 @@
+{
+  "name": "modella-ajax",
+  "version": "0.0.0",
+  "description": "AJAX Sync Layer for Modella",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/modella/ajax"
+  },
+  "keywords": [
+    "modella",
+    "sync",
+    "ajax"
+  ],
+  "author": "Ryan Schmukler",
+  "license": "MIT",
+  "dependencies": {
+    "modella": "~0.0.8"
+  },
+  "devDependencies": {
+    "chai": "~1.5.0"
+  }
+}
