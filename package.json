@@ -18,9 +18,10 @@
   "author": "Ryan Schmukler",
   "license": "MIT",
   "dependencies": {
-    "modella": "~0.0.8"
+    "modella": "~0.0.8",
+    "superagent": "~0.12.4"
   },
   "devDependencies": {
-    "chai": "~1.5.0"
+    "expectjs": "*"
   }
 }
