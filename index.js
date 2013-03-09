@@ -7,21 +7,27 @@ module.exports = function(baseUrl) {
   function pluralResource(sync) {
     sync.all = function(cb) {
       var url = sync.baseUrl;
-      request.get(url, function(res) {
+      request.get(url)
+      .set('Accept', 'application/json')
+      .end(function(res) {
         cb(res.error, res.body);
       });
     };
 
     sync.get = function(id, cb) {
       var url = sync.baseUrl + '/' + id;
-      request.get(url, function(res) {
+      request.get(url)
+      .set('Accept', 'application/json')
+      .end(function(res) {
         cb(res.error, res.body);
       });
     };
 
     sync.removeAll = function(fn) {
       var url = sync.baseUrl;
-      request.del(url, function(res) {
+      request.del(url)
+      .set('Accept', 'application/json')
+      .end(function(res) {
         fn(res.error, res.body);
       });
     };
@@ -31,6 +37,7 @@ module.exports = function(baseUrl) {
 
       request
       .post(url)
+      .set('Accept', 'application/json')
       .send(this.toJSON())
       .end(function(res) {
         fn(res.error, res.body);
@@ -42,6 +49,7 @@ module.exports = function(baseUrl) {
 
       request
       .post(url)
+      .set('Accept', 'application/json')
       .send(this.toJSON())
       .end(function(res) {
         fn(res.error, res.body);
@@ -51,7 +59,9 @@ module.exports = function(baseUrl) {
     sync.remove = function(fn) {
       var url = sync.baseUrl + "/" + this.primary();
 
-      request.del(url, function(res) {
+      request.del(url)
+      .set('Accept', 'application/json')
+      .end(function(res) {
         fn(res.error, res.body);
       });
     };

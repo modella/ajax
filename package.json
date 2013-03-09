@@ -22,6 +22,6 @@
     "superagent": "~0.12.4"
   },
   "devDependencies": {
-    "expectjs": "*"
+    "expect.js": "*"
   }
 }
