@@ -47,6 +47,14 @@ module.exports = function(baseUrl) {
         fn(res.error, res.body);
       });
     };
+
+    sync.remove = function(fn) {
+      var url = sync.baseUrl + "/" + this.primary();
+
+      request.del(url, function(res) {
+        fn(res.error, res.body);
+      });
+    };
   }
 
   return function(Model) {

@@ -9,8 +9,8 @@
     "ajax"
   ],
   "dependencies": {
-    'modella/modella': '~0.0.8',
-    'visionmedia/superagent': '~0.12.4',
+    "modella/modella": "*",
+    "visionmedia/superagent": "*"
   },
   "development": {},
   "license": "MIT",

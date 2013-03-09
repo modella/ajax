@@ -270,4 +270,34 @@ describe("Ajax Sync", function() {
       });
     });
   });
+
+  describe(".remove()", function() {
+    it("does a DELETE request to the base url with the ID", function(done) {
+      var del = superagent.del;
+      superagent.del = function(url, cb) {
+        expect(url).to.be('/users/123');
+        cb({});
+      };
+
+      var user = new User({id: "123"});
+      user.remove(function() { 
+        superagent.del = del;
+        done();
+      });
+    });
+
+    it("passes along errors from superagent", function(done) {
+      var del = superagent.del;
+      superagent.del = function(url, cb) {
+        cb({error: true, body: "Some Message" });
+      };
+
+      var user = new User({id: "123"});
+      user.remove(function(err) {
+        expect(err).to.be(true);
+        superagent.del = del;
+        done();
+      });
+    });
+  });
 });
