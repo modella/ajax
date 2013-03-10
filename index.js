@@ -48,7 +48,7 @@ module.exports = function(baseUrl) {
       var url = sync.baseUrl + "/" + this.primary();
 
       request
-      .post(url)
+      .put(url)
       .set('Accept', 'application/json')
       .send(this.toJSON())
       .end(function(res) {

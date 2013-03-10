@@ -249,14 +249,14 @@ describe("Ajax Sync", function() {
   });
 
   describe(".update()", function() {
-    it("does a POST request to the base URL with the ID", function(done) {
-      var post = superagent.post;
+    it("does a PUT request to the base URL with the ID", function(done) {
+      var put = superagent.put;
       var superagentApi = {
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
       };
-      superagent.post = function(url) {
+      superagent.put = function(url) {
         expect(url).to.be('/users/1');
         return superagentApi;
       };
@@ -264,13 +264,13 @@ describe("Ajax Sync", function() {
       var user = new User({id: "1"});
       user.name('Bob');
       user.save(function() {
-        superagent.post = post;
+        superagent.put = put;
         done();
       });
     });
 
-    it("POSTs the attributes of the model", function(done) {
-      var post = superagent.post;
+    it("PUTs the attributes of the model", function(done) {
+      var put = superagent.put;
       var superagentApi = {
         set:  function () { return this; },
         send: function (data) {
@@ -279,26 +279,26 @@ describe("Ajax Sync", function() {
         },
         end:  function(cb) { cb({}); }
       };
-      superagent.post = function(url) {
+      superagent.put = function(url) {
         return superagentApi;
       };
 
       var user = new User({id: "1"});
       user.name('Bob');
       user.save(function() {
-        superagent.post = post;
+        superagent.put = put;
         done();
       });
     });
 
     it("passes along data from superagent", function(done) {
-      var post = superagent.post;
+      var put = superagent.put;
       var superagentApi = {
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({body: {name: "Bobby"}}); }
       };
-      superagent.post = function(url) {
+      superagent.put = function(url) {
         return superagentApi;
       };
 
@@ -306,19 +306,19 @@ describe("Ajax Sync", function() {
       user.name('Bob');
       user.save(function(err) {
         expect(user.name()).to.be("Bobby");
-        superagent.post = post;
+        superagent.put = put;
         done();
       });
     });
 
     it("passes along errors from superagent", function(done) {
-      var post = superagent.post;
+      var put = superagent.put;
       var superagentApi = {
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
       };
-      superagent.post = function(url) {
+      superagent.put = function(url) {
         return superagentApi;
       };
 
@@ -326,7 +326,7 @@ describe("Ajax Sync", function() {
       user.name('Bob');
       user.save(function(err) {
         expect(err).to.be(true);
-        superagent.post = post;
+        superagent.put = put;
         done();
       });
     });
