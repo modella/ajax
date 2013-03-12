@@ -15,6 +15,7 @@
   "development": {},
   "license": "MIT",
   "scripts": [
-    "index.js"
+    "index.js",
+    "lib/ajax.js"
   ]
 }
