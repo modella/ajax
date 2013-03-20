@@ -7,15 +7,15 @@ User.use(sync('/users'));
 
 describe("Ajax Sync", function() {
   it("sets sync", function() {
-    expect(User.sync).to.be.ok();
+    expect(User._sync).to.be.ok();
   });
 
   it("sets the sync name", function() {
-    expect(User.sync.name).to.be('ajax');
+    expect(User._sync.name).to.be('ajax');
   });
 
   it("sets the base url", function() {
-    expect(User.sync.baseUrl).to.be('/users');
+    expect(User._sync.baseUrl).to.be('/users');
   });
 
   describe(".all()", function() {
@@ -31,7 +31,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.all(function() {
+      User._sync.all(function() {
         superagent.get = get;
         done();
       });
@@ -47,7 +47,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.all(function(err, body) {
+      User._sync.all(function(err, body) {
         expect(err).to.be(null);
         expect(body).to.have.length(2);
         superagent.get = get;
@@ -65,7 +65,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.all(function(err, body) {
+      User._sync.all(function(err, body) {
         expect(err).to.be(true);
         superagent.get = get;
         done();
@@ -86,7 +86,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.get(1, function() {
+      User._sync.get(1, function() {
         superagent.get = get;
         done();
       });
@@ -102,7 +102,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.get(1, function(err, body) {
+      User._sync.get(1, function(err, body) {
         expect(err).to.be(null);
         expect(body).to.have.property('id', '1');
         superagent.get = get;
@@ -120,7 +120,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User.sync.get(1, function(err, body) {
+      User._sync.get(1, function(err, body) {
         expect(err).to.be(true);
         superagent.get = get;
         done();

@@ -1,6 +1,6 @@
 {
   "name": "modella-ajax",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "AJAX Sync Layer for Modella",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Ryan Schmukler",
   "license": "MIT",
   "dependencies": {
-    "modella": "~0.0.8",
+    "modella": ">=0.1.0",
     "superagent": "~0.12.4"
   },
   "devDependencies": {
