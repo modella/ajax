@@ -1,6 +1,6 @@
 {
   "name": "modella-ajax",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "AJAX Sync Layer for Modella",
   "main": "index.js",
   "scripts": {
