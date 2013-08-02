@@ -51,6 +51,63 @@ Additionally, you can "Remove all" with the following HTTP Request:
 All of these methods are optional but you will not be able to use modella's depending methods without first making an API
 that responds to the appropriate patterns.
 
+## Defining Alternative Routes
+
+You can specify different routes than the defaults by passing in a second
+optional argument to `modella-ajax`. 
+
+### Defaults
+The default urlMap looks like the following (and maps to the API expectations above).
+
+    sync.urlMap = {
+      create:     '',
+      list:       '',
+      read:       '/:primary',
+      remove:     '/:primary',
+      removeAll:  '',
+      update:     '/:primary'
+    };
+
+### Overriding
+
+If you wanted to override them, you could do so in the following way:
+
+    var ajax = require('modella-ajax')('/api/v1/users', {
+      read: '/:username',
+      update: '/:username',
+      remove: '/:username'
+    });
+    
+    User.use(ajax);
+
+This would make it so that the following routes were used:
+
+    READ   ->  GET /api/v1/users/:username
+    UPDATE ->  PUT /api/v1/users/:username
+    REMOVE ->  DEL /api/v1/users/:username
+
+### Gotchyas
+
+Worth noting that if you specify an attribute for `READ`, you must pass it in
+when querying. For example:
+
+    User.get({username: 'bobby'}, function(err, u) { }) ;
+
+If a string is passed into get, it will try and replace `:primary` with it in
+the route. For Example:
+
+    User.get('1234', function(err, u) { }) ;
+
+Wouldn't do anything because our routes wouldn't match up. You would need to
+specify a route of `read: "/:primary"`.
+
+
+Lastly, extra parameters passed into `Model.get` are not maintained unless
+they are in the route. For example:
+
+    User.get({username: 'tommy', age: 22})
+ 
+ Would still map to `GET /api/v1/users/tommy`.
 
 ## Todo
 

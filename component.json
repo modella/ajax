@@ -9,6 +9,7 @@
     "ajax"
   ],
   "dependencies": {
+    "rschmukler/node-extend": "*",
     "modella/modella": "*",
     "visionmedia/superagent": "*"
   },
