@@ -1,6 +1,6 @@
 {
   "name": "modella-ajax",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "AJAX Sync Layer for Modella",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "modella": ">=0.1.0",
-    "superagent": "~0.12.4"
+    "extend": "~1.1.3",
+    "superagent": "~0.15.4"
   },
   "devDependencies": {
     "expect.js": "*"

@@ -23,6 +23,7 @@ describe("Ajax Sync", function() {
     it("does a GET request to the base url", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -40,6 +41,7 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: null, body: [{id: "0", name: "Bob"}, {id: "1", name: "Tobi"}]}); }
       };
@@ -58,6 +60,7 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true, body: undefined}); }
       };
@@ -78,6 +81,7 @@ describe("Ajax Sync", function() {
     it("does a GET request to the base url with the ID", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -95,6 +99,7 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: null, body: {id: "1", name: "Bob"}}); }
       };
@@ -113,6 +118,7 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true, body: undefined}); }
       };
@@ -132,6 +138,7 @@ describe("Ajax Sync", function() {
     it("does a DELETE request to the base URL", function(done) {
       var del = superagent.del;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -149,6 +156,7 @@ describe("Ajax Sync", function() {
     it("forwards on errors from superagent", function(done) {
       var del = superagent.del;
       var superagentApi = {
+        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true}); }
       };
@@ -168,6 +176,7 @@ describe("Ajax Sync", function() {
     it("does a POST request to the base URL", function(done) {
       var post = superagent.post;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -188,6 +197,7 @@ describe("Ajax Sync", function() {
     it("POSTs the attributes of the model", function(done) {
       var post = superagent.post;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function (data) {
           expect(data).to.have.property('name', 'Bob');
@@ -210,6 +220,7 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var post = superagent.post;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({body: {id: "513"}}); }
@@ -230,6 +241,7 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var post = superagent.post;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
@@ -252,6 +264,7 @@ describe("Ajax Sync", function() {
     it("does a PUT request to the base URL with the ID", function(done) {
       var put = superagent.put;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -272,6 +285,7 @@ describe("Ajax Sync", function() {
     it("PUTs the attributes of the model", function(done) {
       var put = superagent.put;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function (data) {
           expect(data).to.have.property('name', 'Bob');
@@ -294,6 +308,7 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var put = superagent.put;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({body: {name: "Bobby"}}); }
@@ -314,6 +329,7 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var put = superagent.put;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
@@ -336,6 +352,7 @@ describe("Ajax Sync", function() {
     it("does a DELETE request to the base url with the ID", function(done) {
       var del = superagent.del;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -355,6 +372,7 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var del = superagent.del;
       var superagentApi = {
+        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
