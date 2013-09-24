@@ -24,6 +24,7 @@ describe("Ajax Sync", function() {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
+        query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -42,6 +43,7 @@ describe("Ajax Sync", function() {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
+        query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: null, body: [{id: "0", name: "Bob"}, {id: "1", name: "Tobi"}]}); }
       };
@@ -61,6 +63,7 @@ describe("Ajax Sync", function() {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
+        query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true, body: undefined}); }
       };
@@ -139,6 +142,7 @@ describe("Ajax Sync", function() {
       var del = superagent.del;
       var superagentApi = {
         type:  function () { return this; },
+        query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -157,6 +161,7 @@ describe("Ajax Sync", function() {
       var del = superagent.del;
       var superagentApi = {
         type:  function () { return this; },
+        query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true}); }
       };
