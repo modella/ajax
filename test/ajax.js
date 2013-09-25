@@ -24,7 +24,10 @@ describe("Ajax Sync", function() {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
-        query: function() { return this; },
+        query: function(query) {
+          expect(query).to.eql({});
+          return this;
+        },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -34,6 +37,28 @@ describe("Ajax Sync", function() {
       };
 
       User._sync.all(function() {
+        superagent.get = get;
+        done();
+      });
+    });
+
+    it("passes query to superagent", function(done) {
+      var get = superagent.get;
+      var superagentApi = {
+        type:  function () { return this; },
+        query: function(query) {
+          expect(query).to.eql({ name: "bob" });
+          return this;
+        },
+        set: function () { return this; },
+        end: function(cb) { cb({}); }
+      };
+      superagent.get = function(url) {
+        expect(url).to.be('/users');
+        return superagentApi;
+      };
+
+      User._sync.all({ name: "bob" }, function() {
         superagent.get = get;
         done();
       });
@@ -142,7 +167,10 @@ describe("Ajax Sync", function() {
       var del = superagent.del;
       var superagentApi = {
         type:  function () { return this; },
-        query: function() { return this; },
+        query: function(query) {
+          expect(query).to.eql({});
+          return this;
+        },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -152,6 +180,28 @@ describe("Ajax Sync", function() {
       };
 
       User.removeAll(function() {
+        superagent.del = del;
+        done();
+      });
+    });
+
+    it("passes query to superagent", function(done) {
+      var del = superagent.del;
+      var superagentApi = {
+        type:  function () { return this; },
+        query: function(query) {
+          expect(query).to.eql({ name: "bob" });
+          return this;
+        },
+        set: function () { return this; },
+        end: function(cb) { cb({}); }
+      };
+      superagent.del = function(url) {
+        expect(url).to.be('/users');
+        return superagentApi;
+      };
+
+      User._sync.removeAll({ name: "bob" }, function() {
         superagent.del = del;
         done();
       });
