@@ -86,6 +86,33 @@ This would make it so that the following routes were used:
     UPDATE ->  PUT /api/v1/users/:username
     REMOVE ->  DEL /api/v1/users/:username
 
+### Events
+
+#### ajaxParseAllBody
+
+Emitted before `Model.all()` instantiates the model instances.
+
+    User.on('ajaxParseAllBody', function(res) {
+        var users = res.body.results;
+        // Convert JSON string dates into actual dates
+        users.forEach(u) {
+           u.registeredAt = new Date(u.registeredAt);
+        }
+        res.body = users;
+    });
+
+#### ajaxParseGetBody
+
+Emitted before `Model.get()` instantiates the model instance.
+
+    User.on('ajaxParseGetBody', function(res) {
+      res.body.registeredAt = new Date(res.body.registeredAt);
+    });
+
+#### ajaxParseRemoveAllBody
+
+Emitted before `Model.removeAll()` passes response to callback.
+
 ### Gotchyas
 
 Worth noting that if you specify an attribute for `READ`, you must pass it in

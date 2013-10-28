@@ -95,6 +95,27 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it('emits "ajaxParseAllBody" event', function(done) {
+      var get = superagent.get;
+      var superagentApi = {
+        type:  function () { return this; },
+        query: function() { return this; },
+        set: function () { return this; },
+        end: function(cb) { cb([]); }
+      };
+      superagent.get = function(url) {
+        return superagentApi;
+      };
+      var emit = User.emit;
+      User.emit = function(event, data) {
+        User.emit = emit;
+        superagent.get = get;
+        expect(event).to.be("ajaxParseAllBody");
+        expect(data).to.be.an('array');
+        done();
+      };
+      User.all(function() {});
+    });
   });
 
   describe(".get()", function() {
@@ -154,6 +175,28 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it('emits "ajaxParseGetBody" event', function(done) {
+      var get = superagent.get;
+      var superagentApi = {
+        type:  function () { return this; },
+        set: function () { return this; },
+        end: function(cb) { cb({ body: {id: 1} }); }
+      };
+      superagent.get = function(url) {
+        expect(url).to.be('/users/1');
+        return superagentApi;
+      };
+      var emit = User.emit;
+      User.emit = function(event, data) {
+        superagent.get = get;
+        User.emit = emit;
+        expect(event).to.be('ajaxParseGetBody');
+        expect(data).to.have.property('body');
+        expect(data.body).to.have.property('id', 1);
+        done();
+      };
+      User.get(1, function() {});
+    });
   });
 
   describe(".removeAll()", function() {
@@ -218,6 +261,28 @@ describe("Ajax Sync", function() {
         superagent.del = del;
         done();
       });
+    });
+
+    it('emits "ajaxParseRemoveAllBody" event', function(done) {
+      var del = superagent.del;
+      var superagentApi = {
+        type:  function () { return this; },
+        query: function() { return this; },
+        set: function () { return this; },
+        end: function(cb) { cb({error: true}); }
+      };
+      superagent.del = function(url) {
+        return superagentApi;
+      };
+      var emit = User.emit;
+      User.emit = function(event, data) {
+        superagent.del = del;
+        User.emit = emit;
+        expect(event).to.be('ajaxParseRemoveAllBody');
+        expect(data).to.have.property('error', true);
+        done();
+      };
+      User.removeAll(function() {});
     });
   });
 
