@@ -2,7 +2,7 @@
   "name": "modella-ajax",
   "repo": "modella/ajax",
   "description": "AJAX Sync Layer for Modella",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "keywords": [
     "modella",
     "sync",
