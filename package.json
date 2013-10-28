@@ -18,7 +18,7 @@
   "author": "Ryan Schmukler",
   "license": "MIT",
   "dependencies": {
-    "modella": ">=0.1.0",
+    "modella": ">=0.2.0",
     "extend": "~1.1.3",
     "superagent": "~0.15.4"
   },
