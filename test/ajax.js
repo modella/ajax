@@ -67,8 +67,7 @@ describe("Ajax Sync", function() {
       superagent.get = function(url) {
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.all(function(err, body) {
+      User.all(function(err, body) {
         expect(err).to.be(null);
         superagent.get = get;
         done();
@@ -179,15 +178,14 @@ describe("Ajax Sync", function() {
           expect(header).to.have.property('Accept', 'application/json');
           return this;
         },
-        end: function(cb) { cb({error: null, body: {id: "1", name: "Bob"}}); }
+        end: function(cb) { cb({error: null, body: {id: 1, name: "Bob"}}); }
       };
       superagent.get = function(url) {
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.get(1, function(err, body) {
+      User.get(1, function(err, user) {
         expect(err).to.be(null);
-        expect(body).to.have.property('id', '1');
+        expect(user.primary()).to.be(1);
         superagent.get = get;
         done();
       });
@@ -294,8 +292,7 @@ describe("Ajax Sync", function() {
         expect(url).to.be('/users');
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.removeAll({ name: "bob" }, function() {
+      User.removeAll({ name: "bob" }, function() {
         superagent.del = del;
         done();
       });
@@ -419,8 +416,6 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.header = { Accept: 'application/json' };
-
       var user = new User();
       user.name('Bob');
       user.save(function(err) {
@@ -528,8 +523,6 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.header = { Accept: 'application/json' };
-
       var user = new User({id: "123"});
       user.name('Bob');
       user.save(function(err) {
@@ -594,8 +587,6 @@ describe("Ajax Sync", function() {
         expect(url).to.be('/users/123');
         return superagentApi;
       };
-
-      User._sync.header = { Accept: 'application/json' };
 
       var user = new User({id: "123"});
       user.remove(function() {
