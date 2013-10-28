@@ -23,7 +23,6 @@ describe("Ajax Sync", function() {
     it("does a GET request to the base url", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         query: function(query) {
           expect(query).to.eql({});
           return this;
@@ -45,7 +44,6 @@ describe("Ajax Sync", function() {
     it("passes query to superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         query: function(query) {
           expect(query).to.eql({ name: "bob" });
           return this;
@@ -64,10 +62,30 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for request", function(done) {
+      var get = superagent.get;
+      var superagentApi = {
+        query: function() { return this; },
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        end: function(cb) { cb({error: null, body: [{id: "0", name: "Bob"}, {id: "1", name: "Tobi"}]}); }
+      };
+      superagent.get = function(url) {
+        return superagentApi;
+      };
+      User._sync.header = { Accept: 'application/json' };
+      User._sync.all(function(err, body) {
+        expect(err).to.be(null);
+        superagent.get = get;
+        done();
+      });
+    });
+
     it("passes along data from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: null, body: [{id: "0", name: "Bob"}, {id: "1", name: "Tobi"}]}); }
@@ -87,7 +105,6 @@ describe("Ajax Sync", function() {
     it("passes along errors from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true, body: undefined}); }
@@ -109,7 +126,6 @@ describe("Ajax Sync", function() {
     it("does a GET request to the base url with the ID", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({}); }
       };
@@ -127,7 +143,6 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: null, body: {id: "1", name: "Bob"}}); }
       };
@@ -143,10 +158,30 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for request", function(done) {
+      var get = superagent.get;
+      var superagentApi = {
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        end: function(cb) { cb({error: null, body: {id: "1", name: "Bob"}}); }
+      };
+      superagent.get = function(url) {
+        return superagentApi;
+      };
+      User._sync.header = { Accept: 'application/json' };
+      User._sync.get(1, function(err, body) {
+        expect(err).to.be(null);
+        expect(body).to.have.property('id', '1');
+        superagent.get = get;
+        done();
+      });
+    });
+
     it("passes along errors from superagent", function(done) {
       var get = superagent.get;
       var superagentApi = {
-        type:  function () { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true, body: undefined}); }
       };
@@ -166,7 +201,6 @@ describe("Ajax Sync", function() {
     it("does a DELETE request to the base URL", function(done) {
       var del = superagent.del;
       var superagentApi = {
-        type:  function () { return this; },
         query: function(query) {
           expect(query).to.eql({});
           return this;
@@ -188,7 +222,6 @@ describe("Ajax Sync", function() {
     it("passes query to superagent", function(done) {
       var del = superagent.del;
       var superagentApi = {
-        type:  function () { return this; },
         query: function(query) {
           expect(query).to.eql({ name: "bob" });
           return this;
@@ -207,10 +240,33 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for request", function(done) {
+      var del = superagent.del;
+      var superagentApi = {
+        query: function(query) {
+          expect(query).to.eql({ name: "bob" });
+          return this;
+        },
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        end: function(cb) { cb({}); }
+      };
+      superagent.del = function(url) {
+        expect(url).to.be('/users');
+        return superagentApi;
+      };
+      User._sync.header = { Accept: 'application/json' };
+      User._sync.removeAll({ name: "bob" }, function() {
+        superagent.del = del;
+        done();
+      });
+    });
+
     it("forwards on errors from superagent", function(done) {
       var del = superagent.del;
       var superagentApi = {
-        type:  function () { return this; },
         query: function() { return this; },
         set: function () { return this; },
         end: function(cb) { cb({error: true}); }
@@ -231,7 +287,6 @@ describe("Ajax Sync", function() {
     it("does a POST request to the base URL", function(done) {
       var post = superagent.post;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -252,7 +307,6 @@ describe("Ajax Sync", function() {
     it("POSTs the attributes of the model", function(done) {
       var post = superagent.post;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function (data) {
           expect(data).to.have.property('name', 'Bob');
@@ -275,7 +329,6 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var post = superagent.post;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({body: {id: "513"}}); }
@@ -293,10 +346,34 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for request", function(done) {
+      var post = superagent.post;
+      var superagentApi = {
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        send: function () { return this; },
+        end:  function(cb) { cb({body: {id: "513"}}); }
+      };
+      superagent.post = function(url) {
+        return superagentApi;
+      };
+
+      User._sync.header = { Accept: 'application/json' };
+
+      var user = new User();
+      user.name('Bob');
+      user.save(function(err) {
+        expect(user.id()).to.be("513");
+        superagent.post = post;
+        done();
+      });
+    });
+
     it("passes along errors from superagent", function(done) {
       var post = superagent.post;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
@@ -319,7 +396,6 @@ describe("Ajax Sync", function() {
     it("does a PUT request to the base URL with the ID", function(done) {
       var put = superagent.put;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -340,7 +416,6 @@ describe("Ajax Sync", function() {
     it("PUTs the attributes of the model", function(done) {
       var put = superagent.put;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function (data) {
           expect(data).to.have.property('name', 'Bob');
@@ -363,7 +438,6 @@ describe("Ajax Sync", function() {
     it("passes along data from superagent", function(done) {
       var put = superagent.put;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({body: {name: "Bobby"}}); }
@@ -381,10 +455,34 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for requst", function(done) {
+      var put = superagent.put;
+      var superagentApi = {
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        send: function () { return this; },
+        end:  function(cb) { cb({body: {name: "Bobby"}}); }
+      };
+      superagent.put = function(url) {
+        return superagentApi;
+      };
+
+      User._sync.header = { Accept: 'application/json' };
+
+      var user = new User({id: "123"});
+      user.name('Bob');
+      user.save(function(err) {
+        expect(user.name()).to.be("Bobby");
+        superagent.put = put;
+        done();
+      });
+    });
+
     it("passes along errors from superagent", function(done) {
       var put = superagent.put;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }
@@ -407,7 +505,6 @@ describe("Ajax Sync", function() {
     it("does a DELETE request to the base url with the ID", function(done) {
       var del = superagent.del;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({}); }
@@ -424,10 +521,33 @@ describe("Ajax Sync", function() {
       });
     });
 
+    it("sets header for request", function(done) {
+      var del = superagent.del;
+      var superagentApi = {
+        set: function (header) {
+          expect(header).to.have.property('Accept', 'application/json');
+          return this;
+        },
+        send: function () { return this; },
+        end:  function(cb) { cb({}); }
+      };
+      superagent.del = function(url, cb) {
+        expect(url).to.be('/users/123');
+        return superagentApi;
+      };
+
+      User._sync.header = { Accept: 'application/json' };
+
+      var user = new User({id: "123"});
+      user.remove(function() {
+        superagent.del = del;
+        done();
+      });
+    });
+
     it("passes along errors from superagent", function(done) {
       var del = superagent.del;
       var superagentApi = {
-        type:  function () { return this; },
         set:  function () { return this; },
         send: function () { return this; },
         end:  function(cb) { cb({error: true}); }

@@ -109,6 +109,16 @@ they are in the route. For example:
  
  Would still map to `GET /api/v1/users/tommy`.
 
+### Request header
+
+Set the header object passed to
+[superagent](http://visionmedia.github.io/superagent/):
+
+    Use.use(require('modella-ajax')('/users', null, {
+      Accept: 'application/json',
+      Content-Type: 'application/json'
+    });
+
 ## Todo
 
 - implement API key usage
