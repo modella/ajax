@@ -6,16 +6,8 @@ var superagent = require('superagent');
 User.use(sync('/users'));
 
 describe("Ajax Sync", function() {
-  it("sets sync", function() {
-    expect(User._sync).to.be.ok();
-  });
-
-  it("sets the sync name", function() {
-    expect(User._sync.name).to.be('ajax');
-  });
-
   it("sets the base url", function() {
-    expect(User._sync.baseUrl).to.be('/users');
+    expect(User.baseUrl).to.be('/users');
   });
 
   describe(".all()", function() {
@@ -29,14 +21,14 @@ describe("Ajax Sync", function() {
           return this;
         },
         set: function () { return this; },
-        end: function(cb) { cb({}); }
+        end: function(cb) { cb([{}]); }
       };
       superagent.get = function(url) {
         expect(url).to.be('/users');
         return superagentApi;
       };
 
-      User._sync.all(function() {
+      User.all(function() {
         superagent.get = get;
         done();
       });
@@ -58,7 +50,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.all({ name: "bob" }, function() {
+      User.all({ name: "bob" }, function() {
         superagent.get = get;
         done();
       });
@@ -76,7 +68,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.all(function(err, body) {
+      User.all(function(err, body) {
         expect(err).to.be(null);
         expect(body).to.have.length(2);
         superagent.get = get;
@@ -96,12 +88,13 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.all(function(err, body) {
+      User.all(function(err, body) {
         expect(err).to.be(true);
         superagent.get = get;
         done();
       });
     });
+
   });
 
   describe(".get()", function() {
@@ -118,7 +111,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.get(1, function() {
+      User.get(1, function() {
         superagent.get = get;
         done();
       });
@@ -135,9 +128,9 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.get(1, function(err, body) {
+      User.get(1, function(err, body) {
         expect(err).to.be(null);
-        expect(body).to.have.property('id', '1');
+        expect(body.toJSON()).to.have.property('id', '1');
         superagent.get = get;
         done();
       });
@@ -154,12 +147,13 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.get(1, function(err, body) {
+      User.get(1, function(err, body) {
         expect(err).to.be(true);
         superagent.get = get;
         done();
       });
     });
+
   });
 
   describe(".removeAll()", function() {
@@ -201,7 +195,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.removeAll({ name: "bob" }, function() {
+      User.removeAll({ name: "bob" }, function() {
         superagent.del = del;
         done();
       });
