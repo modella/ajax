@@ -67,8 +67,8 @@ describe("Ajax Sync", function() {
       superagent.get = function(url) {
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.all(function(err, body) {
+      User.header = { Accept: 'application/json' };
+      User.all(function(err, body) {
         expect(err).to.be(null);
         superagent.get = get;
         done();
@@ -112,7 +112,7 @@ describe("Ajax Sync", function() {
       });
     });
 
-    it('emits "ajaxParseAllBody" event', function(done) {
+    it('emits "ajax all" event', function(done) {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
@@ -123,14 +123,11 @@ describe("Ajax Sync", function() {
       superagent.get = function(url) {
         return superagentApi;
       };
-      var emit = User.emit;
-      User.emit = function(event, data) {
-        User.emit = emit;
+      User.once('ajax all', function(res) {
         superagent.get = get;
-        expect(event).to.be("ajaxParseAllBody");
-        expect(data).to.be.an('array');
+        expect(res).to.be.an('array');
         done();
-      };
+      });
       User.all(function() {});
     });
   });
@@ -179,15 +176,17 @@ describe("Ajax Sync", function() {
           expect(header).to.have.property('Accept', 'application/json');
           return this;
         },
-        end: function(cb) { cb({error: null, body: {id: "1", name: "Bob"}}); }
+        end: function(cb) { cb({error: null, body: {id: 1, name: "Bob"}}); }
       };
       superagent.get = function(url) {
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.get(1, function(err, body) {
+      User.header = { Accept: 'application/json' };
+      User.get(1, function(err, body) {
         expect(err).to.be(null);
-        expect(body).to.have.property('id', '1');
+        expect(body).to.be.an('object');
+        expect(body).to.have.property('attrs');
+        expect(body.attrs).to.have.property('id', 1);
         superagent.get = get;
         done();
       });
@@ -210,7 +209,7 @@ describe("Ajax Sync", function() {
       });
     });
 
-    it('emits "ajaxParseGetBody" event', function(done) {
+    it('emits "ajax get" event', function(done) {
       var get = superagent.get;
       var superagentApi = {
         type:  function () { return this; },
@@ -221,15 +220,12 @@ describe("Ajax Sync", function() {
         expect(url).to.be('/users/1');
         return superagentApi;
       };
-      var emit = User.emit;
-      User.emit = function(event, data) {
+      User.once('ajax get', function(res) {
         superagent.get = get;
-        User.emit = emit;
-        expect(event).to.be('ajaxParseGetBody');
-        expect(data).to.have.property('body');
-        expect(data.body).to.have.property('id', 1);
+        expect(res).to.have.property('body');
+        expect(res.body).to.have.property('id', 1);
         done();
-      };
+      });
       User.get(1, function() {});
     });
   });
@@ -294,8 +290,8 @@ describe("Ajax Sync", function() {
         expect(url).to.be('/users');
         return superagentApi;
       };
-      User._sync.header = { Accept: 'application/json' };
-      User._sync.removeAll({ name: "bob" }, function() {
+      User.header = { Accept: 'application/json' };
+      User.removeAll({ name: "bob" }, function() {
         superagent.del = del;
         done();
       });
@@ -319,25 +315,22 @@ describe("Ajax Sync", function() {
       });
     });
 
-    it('emits "ajaxParseRemoveAllBody" event', function(done) {
+    it('emits "ajax removeAll" event', function(done) {
       var del = superagent.del;
       var superagentApi = {
         type:  function () { return this; },
         query: function() { return this; },
         set: function () { return this; },
-        end: function(cb) { cb({error: true}); }
+        end: function(cb) { cb({ status: 204 }); }
       };
       superagent.del = function(url) {
         return superagentApi;
       };
-      var emit = User.emit;
-      User.emit = function(event, data) {
+      User.once('ajax removeAll', function(res) {
         superagent.del = del;
-        User.emit = emit;
-        expect(event).to.be('ajaxParseRemoveAllBody');
-        expect(data).to.have.property('error', true);
+        expect(res).to.have.property('status', 204);
         done();
-      };
+      });
       User.removeAll(function() {});
     });
   });
@@ -413,18 +406,18 @@ describe("Ajax Sync", function() {
           return this;
         },
         send: function () { return this; },
-        end:  function(cb) { cb({body: {id: "513"}}); }
+        end:  function(cb) { cb({body: {id: 513}}); }
       };
       superagent.post = function(url) {
         return superagentApi;
       };
 
-      User._sync.header = { Accept: 'application/json' };
+      User.header = { Accept: 'application/json' };
 
       var user = new User();
       user.name('Bob');
       user.save(function(err) {
-        expect(user.id()).to.be("513");
+        expect(user.id()).to.be(513);
         superagent.post = post;
         done();
       });
@@ -448,6 +441,26 @@ describe("Ajax Sync", function() {
         superagent.post = post;
         done();
       });
+    });
+
+    it('emits "ajax save" event', function(done) {
+      var post = superagent.post;
+      var superagentApi = {
+        set:  function () { return this; },
+        send: function () { return this; },
+        end:  function(cb) { cb({body: {id: 513}}); }
+      };
+      superagent.post = function(url) {
+        return superagentApi;
+      };
+      var user = new User().name('Bob');
+      User.once('ajax save', function(res) {
+        superagent.post = post;
+        expect(res).to.have.property('body');
+        expect(res.body).to.have.property('id', 513);
+        done();
+      });
+      user.save(function() {});
     });
   });
 
@@ -528,7 +541,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.header = { Accept: 'application/json' };
+      User.header = { Accept: 'application/json' };
 
       var user = new User({id: "123"});
       user.name('Bob');
@@ -557,6 +570,26 @@ describe("Ajax Sync", function() {
         superagent.put = put;
         done();
       });
+    });
+
+    it('emits "ajax update" event', function(done) {
+      var put = superagent.put;
+      var superagentApi = {
+        set:  function () { return this; },
+        send: function () { return this; },
+        end:  function(cb) { cb({body: {name: "Bobby"}}); }
+      };
+      superagent.put = function(url) {
+        return superagentApi;
+      };
+
+      var user = new User({id: "123"}).name('Bob');
+      User.once('ajax update', function(res) {
+        superagent.put = put;
+        expect(res.body.name).to.be("Bobby");
+        done();
+      });
+      user.save(function () {});
     });
   });
 
@@ -595,7 +628,7 @@ describe("Ajax Sync", function() {
         return superagentApi;
       };
 
-      User._sync.header = { Accept: 'application/json' };
+      User.header = { Accept: 'application/json' };
 
       var user = new User({id: "123"});
       user.remove(function() {
@@ -621,6 +654,26 @@ describe("Ajax Sync", function() {
         superagent.del = del;
         done();
       });
+    });
+
+    it('emits "ajax remove" event', function(done) {
+      var del = superagent.del;
+      var superagentApi = {
+        set:  function () { return this; },
+        send: function () { return this; },
+        end:  function(cb) { cb({ status: 204 }); }
+      };
+      superagent.del = function(url, cb) {
+        return superagentApi;
+      };
+
+      var user = new User({id: "123"});
+      User.once('ajax remove', function(res) {
+        superagent.del = del;
+        expect(res).to.have.property('status', 204);
+        done();
+      });
+      user.remove(function() {});
     });
   });
 });
