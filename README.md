@@ -88,11 +88,11 @@ This would make it so that the following routes were used:
 
 ### Events
 
-#### ajaxParseAllBody
+#### ajax all
 
 Emitted before `Model.all()` instantiates the model instances.
 
-    User.on('ajaxParseAllBody', function(res) {
+    User.on('ajax all', function(res) {
         var users = res.body.results;
         // Convert JSON string dates into actual dates
         users.forEach(u) {
@@ -101,17 +101,29 @@ Emitted before `Model.all()` instantiates the model instances.
         res.body = users;
     });
 
-#### ajaxParseGetBody
+#### ajax get
 
 Emitted before `Model.get()` instantiates the model instance.
 
-    User.on('ajaxParseGetBody', function(res) {
+    User.on('ajax get', function(res) {
       res.body.registeredAt = new Date(res.body.registeredAt);
     });
 
-#### ajaxParseRemoveAllBody
+#### ajax removeAll
 
 Emitted before `Model.removeAll()` passes response to callback.
+
+#### ajax save
+
+Emitted before `model.save()` passes response to callback.
+
+#### ajax update
+
+Emitted before `model.update()` passes response to callback.
+
+#### ajax remove
+
+Emitted before `model.remove()` passes response to callback.
 
 ### Gotchyas
 
