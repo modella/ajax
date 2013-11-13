@@ -1,4 +1,11 @@
 
+0.2.1 / 2013-11-12 
+==================
+
+ * Add "ajax request" event.
+ * Add events for all sync methods.
+ * Add response object to error.
+
 0.2.0 / 2013-10-28 
 ==================
 
