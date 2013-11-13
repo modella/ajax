@@ -59,7 +59,7 @@ optional argument to `modella-ajax`.
 ### Defaults
 The default urlMap looks like the following (and maps to the API expectations above).
 
-    sync.urlMap = {
+    var urlMap = {
       create:     '',
       list:       '',
       read:       '/:primary',
@@ -87,6 +87,15 @@ This would make it so that the following routes were used:
     REMOVE ->  DEL /api/v1/users/:username
 
 ### Events
+
+#### ajax request
+
+Emitted before XHR request is sent.
+
+    User.on('ajax request', function(req) {
+      // req is superagent request object
+      req.set('Authorization', 'Bearer 13a9-34b3-a8da-c78d');
+    });
 
 #### ajax all
 
@@ -148,17 +157,6 @@ they are in the route. For example:
  
  Would still map to `GET /api/v1/users/tommy`.
 
-### Request header
-
-Set the header object passed to
-[superagent](http://visionmedia.github.io/superagent/):
-
-    Use.use(require('modella-ajax')('/users', null, {
-      Accept: 'application/json',
-      Content-Type: 'application/json'
-    });
-
 ## Todo
 
-- implement API key usage
 - allow for usage of query strings w/ modellas all method
