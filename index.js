@@ -1,1 +1,5 @@
-module.exports = ((typeof process != 'undefined') && process.env.TEST_COV) ? require('./lib-cov/ajax') : require('./lib/ajax');
+/**
+ * Expose `modella-ajax`
+ */
+
+module.exports = require('./lib/ajax');

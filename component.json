@@ -3,6 +3,7 @@
   "repo": "modella/ajax",
   "description": "AJAX Sync Layer for Modella",
   "version": "0.2.2",
+  "main": "lib/ajax.js",
   "keywords": [
     "modella",
     "sync",
@@ -16,7 +17,6 @@
   "development": {},
   "license": "MIT",
   "scripts": [
-    "index.js",
     "lib/ajax.js"
   ]
 }
