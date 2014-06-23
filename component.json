@@ -2,7 +2,7 @@
   "name": "modella-ajax",
   "repo": "modella/ajax",
   "description": "AJAX Sync Layer for Modella",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "main": "lib/ajax.js",
   "keywords": [
     "modella",
@@ -10,8 +10,8 @@
     "ajax"
   ],
   "dependencies": {
-    "matthewmueller/node-extend": "*",
-    "visionmedia/superagent": "*"
+    "matthewmueller/extend.js": "0.0.1",
+    "visionmedia/superagent": "0.18.x"
   },
   "development": {},
   "license": "MIT",
